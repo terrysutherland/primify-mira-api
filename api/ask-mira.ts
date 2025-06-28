@@ -16,7 +16,7 @@ export default async function handler(req, res) {
 
   // ✅ HANDLE PREFLIGHT OPTIONS REQUEST:
   if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+    return;
   }
 
   const { userId, userMessage } = req.body;
