@@ -9,6 +9,16 @@ const supabase = createClient(
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export default async function handler(req, res) {
+  // ✅ ADD THESE CORS HEADERS FIRST:
+  res.setHeader("Access-Control-Allow-Origin", "https://primify.ai");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  // ✅ HANDLE PREFLIGHT OPTIONS REQUEST:
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   const { userId, userMessage } = req.body;
 
   if (!userId || !userMessage) {
@@ -60,7 +70,6 @@ User's Profile Data:
 - Interests: ${profile.interest_categories || 'None'}
 `;
 
-  // 🔹 Call the OpenAI API here:
   const completion = await openai.chat.completions.create({
     model: 'gpt-4',
     messages: [
@@ -69,6 +78,5 @@ User's Profile Data:
     ]
   });
 
-  // 🔹 Return the GPT reply:
   res.status(200).json({ reply: completion.choices[0].message.content });
 }
