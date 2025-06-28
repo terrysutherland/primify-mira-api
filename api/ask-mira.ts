@@ -16,8 +16,8 @@ export default async function handler(req, res) {
   }
 
   const { data: profile, error } = await supabase
-    .from('user_profile')
-    .select('coaching_style, retirement_stage, interests, focus_areas')
+    .from('profiles') // your actual table name
+    .select('coaching_style, retirement_stage, interest_categories, friendly_name')
     .eq('user_id', userId)
     .single();
 
@@ -54,19 +54,11 @@ Your tone matches their coaching style:
 - Focused: clear and goal-oriented
 
 User's Profile Data:
+- Friendly Name: ${profile.friendly_name}
 - Coaching Style: ${profile.coaching_style}
 - Retirement Stage: ${profile.retirement_stage}
-- Focus Areas: ${profile.focus_areas?.join(', ') || 'None'}
-- Interests: ${profile.interests?.join(', ') || 'None'}
+- Interests: ${profile.interest_categories || 'None'}
 `;
-
-  const completion = await openai.chat.completions.create({
-    model: 'gpt-4',
-    messages: [
-      { role: 'system', content: systemPrompt },
-      { role: 'user', content: userMessage }
-    ]
-  });
 
   res.status(200).json({ reply: completion.choices[0].message.content });
 }
