@@ -19,7 +19,7 @@ export default async function handler(req, res) {
   // ✅ HANDLE PREFLIGHT OPTIONS REQUEST:
   if (req.method === 'OPTIONS') {
     console.log("🟡 Mira API: OPTIONS request - exiting early");
-    return res.status(200).end();
+    return res.status(204).end();
   }
 
   console.log("🟢 Mira API: Received request", req.method);
