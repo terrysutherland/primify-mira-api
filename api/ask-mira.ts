@@ -16,7 +16,7 @@ export default async function handler(req, res) {
   }
 
   const { data: profile, error } = await supabase
-    .from('profiles') // your actual table name
+    .from('profiles')
     .select('coaching_style, retirement_stage, interest_categories, friendly_name')
     .eq('user_id', userId)
     .single();
@@ -60,5 +60,15 @@ User's Profile Data:
 - Interests: ${profile.interest_categories || 'None'}
 `;
 
+  // 🔹 Call the OpenAI API here:
+  const completion = await openai.chat.completions.create({
+    model: 'gpt-4',
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userMessage }
+    ]
+  });
+
+  // 🔹 Return the GPT reply:
   res.status(200).json({ reply: completion.choices[0].message.content });
 }
