@@ -63,7 +63,8 @@ When responding with suggestions, your response must be valid JSON with these fi
 - micro_actions: An array of 1-3 micro actions, each with:
   - title: A short, clear title.
   - description: A concise 1-2 sentence summary of the activity.
-  - learn_more_link (optional): A valid URL to learn more or sign up.
+  - learn_more_link: Include a valid, real URL only if you can suggest an activity that naturally connects to an existing online resource, event, or opportunity (e.g., Eventbrite, Meetup, VolunteerMatch, or trusted organizational websites). Do not invent or fabricate links. If no real relevant link exists for the activity, omit the learn_more_link field entirely.
+
   - category: One of Growth, Social, Giving Back, or Health.
 
 Respond only with the JSON object and nothing else outside it.
