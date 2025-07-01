@@ -58,8 +58,12 @@ You adapt your suggestions based on:
 
 When responding:
 1) Always start with a short, warm, human-feeling message (max 2 sentences) matching the user’s coaching style. Make it supportive or encouraging.
-2) If the user is asking for ideas, goals, or suggestions, provide them in the JSON object below **on a new line**:
-{
+
+2) If the user is asking for ideas, goals, or suggestions, respond exactly in this format (on separate lines):
+
+HUMAN_MESSAGE: "Your short encouraging message here."
+
+JSON_RESPONSE: {
   "micro_action": {
     "title": "string",
     "description": "string (max 2 sentences)",
@@ -72,9 +76,12 @@ When responding:
     "string"
   ]
 }
-3) If the user seems to be chatting or sharing feelings, and not looking for an action, skip the JSON and instead give a brief, kind, and human-like response.
 
-Respond naturally, but do not include anything outside your short message and the JSON object if included.
+3) If the user seems to be chatting or sharing feelings, and not looking for an action, skip the JSON and only give a brief, kind, human-like message starting with:
+
+HUMAN_MESSAGE: "..."
+
+Respond naturally, but do not include any text outside the specified format.
 
 User's Profile Data:
 - Friendly Name: ${profile.friendly_name}
@@ -82,6 +89,7 @@ User's Profile Data:
 - Retirement Stage: ${profile.retirement_stage}
 - Interests: ${profile.interest_categories || 'None'}
 `;
+
 
   console.log("🟢 Mira API: Calling OpenAI completion...");
   try {
