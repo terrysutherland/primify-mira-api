@@ -11,10 +11,22 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 export default async function handler(req, res) {
   console.log("🟢 Mira API: Handler started");
 
-  // ✅ ADD THESE CORS HEADERS FIRST:
-  res.setHeader("Access-Control-Allow-Origin", "https://primify.ai");
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+// ✅ ADD THESE CORS HEADERS FIRST:
+const allowedOrigins = [
+  "https://primify.ai",
+  "https://lovable.dev",        // Allow Lovable dev environment
+  "http://localhost:3000",      // Local dev, optional
+];
+
+const requestOrigin = req.headers.origin;
+if (allowedOrigins.includes(requestOrigin)) {
+  res.setHeader("Access-Control-Allow-Origin", requestOrigin);
+} else {
+  res.setHeader("Access-Control-Allow-Origin", "null"); // reject disallowed origins
+}
+
+res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   // ✅ HANDLE PREFLIGHT OPTIONS REQUEST:
   if (req.method === 'OPTIONS') {
