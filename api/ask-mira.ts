@@ -81,10 +81,7 @@ When responding with suggestions, your response must be valid JSON with these fi
 
   - category: One of Growth, Social, Giving Back, or Health.
 
-- follow_up_questions: An array of 1-3 short prompts (each max 3-5 words) suggesting relevant next conversational steps. These should encourage the user to continue the discussion about their thoughts, feelings, or general experience — but avoid questions asking about the outcome of just-suggested activities, since the user hasn't completed them yet.
-
-Example follow_up_questions:
-["Feeling excited?", "Want another idea?", "Need more support?"]
+- follow_up_questions: An array of 2-4 short, first-person user statements (max 3-5 words each) predicting what the user might naturally want to discuss next. These should feel like things the user might say to continue the conversation. Avoid framing them as questions from Mira; instead, make them concise, clear, and user-voiced.
 
 Respond only with the JSON object and nothing else outside it.
 
