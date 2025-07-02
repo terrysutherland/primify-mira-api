@@ -36,7 +36,9 @@ res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   console.log("🟢 Mira API: Received request", req.method);
 
-  const { userId, userMessage, recentMessages = [] } = req.body || {};
+  const { userId, userMessage, recentMessages } = req.body || {};
+  const safeRecentMessages = Array.isArray(recentMessages) ? recentMessages : [];
+
   console.log("🟢 Mira API: Parsed body", { userId, userMessage, recentMessages });
 
   if (!userId || !userMessage) {
@@ -96,10 +98,10 @@ User's Profile Data:
   console.log("🟢 Mira API: Preparing conversation context...");
 
   // Build context with the last 3 recent messages for relevant follow-ups
-  const conversationContext = recentMessages.slice(-3).map((msg) => ({
-    role: msg.sender === 'user' ? 'user' : 'assistant',
-    content: msg.text
-  }));
+  const conversationContext = safeRecentMessages.slice(-3).map((msg) => ({
+  role: msg.sender === 'user' ? 'user' : 'assistant',
+  content: msg.text
+}));
 
   console.log("🟢 Mira API: Context for OpenAI:", conversationContext);
 
