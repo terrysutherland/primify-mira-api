@@ -81,7 +81,10 @@ When responding with suggestions, your response must be valid JSON with these fi
 
   - category: One of Growth, Social, Giving Back, or Health.
 
-- follow_up_questions: An array of 1-3 short, relevant follow-up questions designed to naturally continue the conversation, based on the user's latest message and recent context. These should feel personalized and curious, like "Would you like advice on handling loneliness?" or "Shall we explore activities to boost your mood?" If no meaningful follow-ups exist, set follow_up_questions to an empty array.
+- follow_up_questions: An array of 1-3 short prompts (each max 3-5 words) suggesting relevant next conversational steps. These should encourage the user to continue the discussion about their thoughts, feelings, or general experience — but avoid questions asking about the outcome of just-suggested activities, since the user hasn't completed them yet.
+
+Example follow_up_questions:
+["Feeling excited?", "Want another idea?", "Need more support?"]
 
 Respond only with the JSON object and nothing else outside it.
 
