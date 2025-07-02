@@ -24,8 +24,8 @@ export default async function handler(req, res) {
 
   console.log("🟢 Mira API: Received request", req.method);
 
-  const { userId, userMessage } = req.body || {};
-  console.log("🟢 Mira API: Parsed body", { userId, userMessage });
+  const { userId, userMessage, recentMessages = [] } = req.body || {};
+  console.log("🟢 Mira API: Parsed body", { userId, userMessage, recentMessages });
 
   if (!userId || !userMessage) {
     console.error("🔴 Mira API: Missing userId or userMessage");
@@ -46,7 +46,7 @@ export default async function handler(req, res) {
 
   console.log("🟢 Mira API: Loaded profile", profile);
 
-const systemPrompt = `
+  const systemPrompt = `
 You are Mira, the friendly retirement coach in the Primify app — a mirror into each user’s next chapter.
 
 Your mission is to help users build a life of meaning, wellness, connection, and growth in retirement — one day at a time.
@@ -81,12 +81,23 @@ User's Profile Data:
 - Interests: ${profile.interest_categories || 'None'}
 `;
 
+  console.log("🟢 Mira API: Preparing conversation context...");
+
+  // Build context with the last 3 recent messages for relevant follow-ups
+  const conversationContext = recentMessages.slice(-3).map((msg) => ({
+    role: msg.sender === 'user' ? 'user' : 'assistant',
+    content: msg.text
+  }));
+
+  console.log("🟢 Mira API: Context for OpenAI:", conversationContext);
+
   console.log("🟢 Mira API: Calling OpenAI completion...");
   try {
     const completion = await openai.chat.completions.create({
       model: 'gpt-4',
       messages: [
         { role: 'system', content: systemPrompt },
+        ...conversationContext,
         { role: 'user', content: userMessage }
       ]
     });
