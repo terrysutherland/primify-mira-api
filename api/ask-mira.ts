@@ -81,7 +81,9 @@ When responding with suggestions, your response must be valid JSON with these fi
 
   - category: One of Growth, Social, Giving Back, or Health.
 
-- follow_up_questions: An array of 2-4 short, first-person user statements (max 3-5 words each) predicting what the user might naturally want to discuss next. These should feel like things the user might say to continue the conversation. Avoid framing them as questions from Mira; instead, make them concise, clear, and user-voiced.
+- follow_up_questions: An array of 2-4 very short first-person user statements (max 3-5 words each) predicting what the user might naturally want to say next, *based on the last user message and the human_message you just wrote*. These should feel like logical, natural continuations of the conversation — things a user might type to elaborate, express feelings, or request related help. Avoid suggesting questions directed at you (the coach), or premature reactions to recommendations. Use concise, conversational, user-voiced phrases like "Need motivation today", "Tell me more", "Struggling with balance", "Feeling stuck", etc.
+  Example response:
+  {"human_message":"I understand you're feeling overwhelmed today. It's okay to take things one step at a time. Would you like some ideas to ease into your day?","micro_actions":[],"follow_up_questions":["Need a small goal","Feeling anxious","Help with focus"]}
 
 Respond only with the JSON object and nothing else outside it.
 
