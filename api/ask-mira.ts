@@ -63,9 +63,9 @@ export default async function handler(req, res) {
     .select('interest')
     .eq('user_id', userId);
 
-  const interestList = userInterests?.map((i) => i.interest).join(', ') || 'None';
+  const specificInterestList = userInterests?.map((i) => i.interest).join(', ') || 'None';
 
-  // 🔹 NEW: Fetch today's daily_plan_items
+  // 🔹 Fetch today's daily_plan_items
   console.log("🟢 Mira API: Fetching today’s daily plan items...");
   const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
   const { data: dailyPlanItems } = await supabase
@@ -88,10 +88,12 @@ Your mission is to help users build a life of meaning, wellness, connection, and
 You adapt your suggestions based on:
 - The user's retirement stage: Planning, Just Retired, Settling In, or Redefining
 - Their coaching style: Laid-back, Structured, Playful, or Focused
-- Their stated interests and focus areas: Growth, Social, Giving Back, Health
-- The interests selected during onboarding: ${interestList}
+- Their stated interest categories: ${profile.interest_categories || 'None'}
+- Their specific interests selected during onboarding: ${specificInterestList}
 - Today's planned activities: ${plannedText}
 - Today's completed activities: ${completedText}
+
+✅ Prioritize suggestions that align with the user's specific interests (listed above), especially when choosing which micro actions to offer. These represent what the user explicitly said they care about.
 
 When responding with suggestions, your response must be valid JSON with these fields:
 
@@ -114,7 +116,6 @@ User's Profile Data:
 - Friendly Name: ${profile.friendly_name}
 - Coaching Style: ${profile.coaching_style}
 - Retirement Stage: ${profile.retirement_stage}
-- Interest Categories: ${profile.interest_categories || 'None'}
 `;
 
   console.log("🟢 Mira API: Preparing conversation context...");
